@@ -6,7 +6,7 @@ class StringConstant : public Expression
 {
     QString str;
 public:
-    StringConstant(const QString & str);
+    StringConstant(QObject * parent,const QString & str);
 
 
     // Expression interface

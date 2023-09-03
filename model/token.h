@@ -10,6 +10,13 @@ public:
     enum TokenType{StringLiteral,
                      Identifier,
                     Int32Type,
+                     Int64Type,
+                     Int8Type,
+                     Int16Type,
+                     UInt32Type,
+                     UInt64Type,
+                     UInt8Type,
+                     UInt16Type,
                      StringType,
                    OpeningParenthesis,
                    ClosingParenthesis,
@@ -17,7 +24,6 @@ public:
                    ClosingBracket,
                      OpeningBrace,
                      ClosingBrace,
-                   ArrayType,
                    ParenthesisExpression,
                    Assign,
                    Equals,
@@ -28,7 +34,9 @@ public:
                    LessThanOrEqual,
                    Not,
                    Plus,
+                   Increment,
                    Minus,
+                    UnaryMinus,
                    Multiply,
                    Divide,
                    Or,
@@ -38,7 +46,9 @@ public:
 //                   XOr,
                     IntLiteral,
                      FloatLiteral,
-                     DebugFunction
+                     DebugFunction,
+                     ForLoop,
+                     WhileLoop
                   };
 private:
     QString token;
@@ -46,6 +56,7 @@ private:
 
 public:
     Token(const QString &token,TokenType type);
+    Token(const QString &token,TokenType type,Expression * expr);
     Token(TokenType type);
     const QString &getToken()const;
     TokenType getType() const;
@@ -55,5 +66,7 @@ public:
     void setExpr(Expression *newExpr);
     void setType(TokenType newType);
     void setToken(const QString &newToken);
+
+    static QString tokenTypeToString(TokenType type);
 };
 

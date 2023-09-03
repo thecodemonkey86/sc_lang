@@ -1,6 +1,7 @@
 #include "stringconstant.h"
 
-StringConstant::StringConstant(const QString &str) : Expression(), str(str)
+StringConstant::StringConstant(QObject *parent, const QString &str)
+    : Expression(parent), str(str)
 {
 
 }

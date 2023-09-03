@@ -43,18 +43,68 @@ else:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../build/QtCommon2-Desktop
 INCLUDEPATH += $$PWD/../QtCommon2
 
 HEADERS += \
+    model/accessvarexpression.h \
+    model/andoperator.h \
+    model/assigninstruction.h \
+    model/ast.h \
+    model/declareinstruction.h \
+    model/divideoperator.h \
     model/expression.h \
+    model/floatconstant.h \
+    model/forloop.h \
+    model/function.h \
+    model/greaterthanoperator.h \
+    model/incrementinstruction.h \
+    model/instruction.h \
+    model/instructionblock.h \
+    model/int32type.h \
+    model/intconstant.h \
+    model/lessthanoperator.h \
+    model/minusoperator.h \
+    model/multiplyoperator.h \
+    model/notoperator.h \
+    model/oroperator.h \
     model/parenthesisexpression.h \
+    model/plusoperator.h \
     model/stringconstant.h \
     model/token.h \
     model/tokenlist.h \
+    model/type.h \
+    model/unaryminusoperator.h \
+    model/var.h \
+    model/whileloop.h \
     parser/parser.h
 
 SOURCES += \
     main.cpp \
+    model/accessvarexpression.cpp \
+    model/andoperator.cpp \
+    model/assigninstruction.cpp \
+    model/ast.cpp \
+    model/declareinstruction.cpp \
+    model/divideoperator.cpp \
     model/expression.cpp \
+    model/floatconstant.cpp \
+    model/forloop.cpp \
+    model/function.cpp \
+    model/greaterthanoperator.cpp \
+    model/incrementinstruction.cpp \
+    model/instruction.cpp \
+    model/instructionblock.cpp \
+    model/int32type.cpp \
+    model/intconstant.cpp \
+    model/lessthanoperator.cpp \
+    model/minusoperator.cpp \
+    model/multiplyoperator.cpp \
+    model/notoperator.cpp \
+    model/oroperator.cpp \
     model/parenthesisexpression.cpp \
+    model/plusoperator.cpp \
     model/stringconstant.cpp \
     model/token.cpp \
     model/tokenlist.cpp \
+    model/type.cpp \
+    model/unaryminusoperator.cpp \
+    model/var.cpp \
+    model/whileloop.cpp \
     parser/parser.cpp

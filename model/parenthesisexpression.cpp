@@ -1,12 +1,7 @@
 #include "parenthesisexpression.h"
 
-
-void ParenthesisExpression::setExpr(Expression *newExpr)
-{
-    expr = newExpr;
-}
-
-ParenthesisExpression::ParenthesisExpression() : Expression(), expr(nullptr)
+ParenthesisExpression::ParenthesisExpression(QObject *parent, Expression *expr)
+    :Expression(parent),expr(expr)
 {
 
 }
@@ -14,4 +9,25 @@ ParenthesisExpression::ParenthesisExpression() : Expression(), expr(nullptr)
 Expression *ParenthesisExpression::evaluate()
 {
     return expr->evaluate();
+}
+
+int ParenthesisExpression::toInt()
+{
+    return expr->toInt();
+}
+
+Expression *ParenthesisExpression::plus(Expression *other)
+{
+    return expr->plus(other);
+}
+
+Expression *ParenthesisExpression::multiply(Expression *other)
+{
+    return expr->multiply(other);
+}
+
+
+Type *ParenthesisExpression::getType() const
+{
+    return expr->getType();
 }

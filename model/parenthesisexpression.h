@@ -6,14 +6,23 @@ class ParenthesisExpression : public Expression
 {
     Expression * expr;
 public:
-    ParenthesisExpression();
+    ParenthesisExpression(QObject * parent,Expression * expr);
 
 
 
     // Expression interface
 public:
     virtual Expression *evaluate() override;
-    void setExpr(Expression *newExpr);
+
+    // Expression interface
+public:
+    virtual int toInt() override;
+
+    // Expression interface
+public:
+    virtual Expression *plus(Expression *other) override;
+    virtual Expression *multiply(Expression *other) override;
+    virtual Type *getType() const override;
 };
 
 

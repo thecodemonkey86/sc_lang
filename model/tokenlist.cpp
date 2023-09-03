@@ -6,10 +6,54 @@ qsizetype TokenList::getPos() const
     return pos;
 }
 
+void TokenList::secureRemoveAt(qsizetype i)
+{
+    if(i>=0 && i<size())
+    {
+        removeAt(i);
+    } else {
+        throwExceptionWithLine("syntax error");
+    }
+
+}
+
+const Token & TokenList::secureAccess(qsizetype i)const
+{
+    if(i>=0 && i<size())
+    {
+        return (*this)[i];
+    } else {
+        throwExceptionWithLine("syntax error");
+    }
+}
+const QString & TokenList::secureAccessStr(qsizetype i) const
+{
+    if(i>=0 && i<size())
+    {
+        return (*this)[i].getToken();
+    } else {
+        throwExceptionWithLine("syntax error");
+    }
+}
+
+Token::TokenType TokenList::secureAccessType(qsizetype i)const
+{
+    if(i>=0 && i<size())
+    {
+        return (*this)[i].getType();
+    } else {
+        throwExceptionWithLine("syntax error");
+    }
+}
 
 TokenList::TokenList() : pos(-1)
 {
 
+}
+
+TokenList::TokenList(const QList<Token> &tokens)
+{
+    append(tokens.begin(),tokens.end());
 }
 
 TokenList &TokenList::incr()
@@ -116,4 +160,6 @@ bool TokenList::hasNext() const
 
 
 
-QRegularExpression TokenList::regexDecimalIntExpression("^\\d+$");
+const QRegularExpression TokenList::INT_EXPRESSION("^\\d+$");
+const QRegularExpression TokenList::FLOAT_EXPRESSION("^\\d+\\.\\d+$");
+
