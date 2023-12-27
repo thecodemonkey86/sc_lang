@@ -10,5 +10,5 @@ IncrementInstruction::IncrementInstruction(QObject *parent, InstructionBlock * i
 
 void IncrementInstruction::execute()
 {
-    expr->increment();
+    expr->evaluate()->increment();
 }

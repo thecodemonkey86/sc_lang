@@ -60,6 +60,11 @@ bool IntConstant::greaterThan(Expression *other)
 
 Expression *IntConstant::increment()
 {
-    val++;
-    return this;
+    return new IntConstant(parent(), val+1);
+}
+
+
+void IntConstant::debug()
+{
+    qDebug().noquote()<<val;
 }

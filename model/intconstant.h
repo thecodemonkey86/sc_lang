@@ -20,5 +20,6 @@ public:
     virtual bool lessThan(Expression *other) override;
     virtual bool greaterThan(Expression *other) override;
     virtual Expression *increment() override;
+    virtual void debug() override;
 };
 

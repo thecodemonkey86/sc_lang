@@ -27,11 +27,12 @@ int AccessVarExpression::toInt()
 
 Expression *AccessVarExpression::evaluate()
 {
-    return parentBlock->getDeclaredVariable(varName)->getValue();
+    return parentBlock->getDeclaredVariable(varName);
 }
 
 
 Expression *AccessVarExpression::increment()
 {
-    return evaluate()->increment();
+    evaluate()->increment();
+    return this;
 }

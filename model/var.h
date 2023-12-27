@@ -1,24 +1,25 @@
+#include "expression.h"
+
 #include <QObject>
 #include <QString>
 
-class Expression;
 #pragma once
 
 
 
 class Type;
-class Var : public QObject
+class Var : public Expression
 {
     Q_OBJECT
+protected:
     Type * type;
     QString name;
-    Expression * value;
 public:
     Var(QObject * parent, Type * type, const QString & name);
 
-
+    virtual Expression* increment();
+    virtual void setValue(Expression * expr)=0;
     QString getName() const;
-    Expression *getValue() const;
-    void setValue(Expression *newValue);
+    static Var * create(QObject * parent, Type * type, const QString & name);
 };
 

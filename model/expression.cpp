@@ -18,7 +18,7 @@ Type *Expression::getType() const
 }
 
 
-void Expression::print()
+void Expression::debug()
 {
 
 }

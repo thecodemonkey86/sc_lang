@@ -6,7 +6,7 @@ class Int32Type;
 class Type : public QObject
 {
 public:
-     static Int32Type* int32Type;
+     static Type* int32Type;
 private:
     QString name;
     bool primitive;
@@ -27,5 +27,6 @@ public:
     static void initPrimitiveTypes();
 
     virtual Type * getPlusOperatorType(Type * other);
+    bool isInt32Type() const;
 };
 

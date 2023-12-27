@@ -14,3 +14,4 @@ Type *Int32Type::getPlusOperatorType(Type *other)
     }
     throwExceptionWithLine("not supported");
 }
+

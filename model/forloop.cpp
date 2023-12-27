@@ -13,9 +13,6 @@ void ForLoop::execute()
 {
     for(start->execute();cond->evaluate()->toBool();step->execute())
     {
-        #ifdef QT_DEBUG
-        qDebug()<<parentBlock->getDeclaredVariable("i")->getValue()->toInt();
-        #endif
         for(const auto & i : instructions)
         {
             i->execute();

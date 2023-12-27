@@ -26,6 +26,7 @@
 #include <model/greaterthanoperator.h>
 #include <model/lessthanoperator.h>
 #include <model/whileloop.h>
+#include <model/debugfunction.h>
 
 using std::make_shared;
 
@@ -67,6 +68,9 @@ void Parser::addToken(const QString &s, TokenList &tokens, qsizetype &start, qsi
         } else if(t == "for")
         {
             tokens.append(Token(t,Token::ForLoop));
+        } else if(t == "while")
+        {
+            tokens.append(Token(t,Token::WhileLoop));
         } else if(!t.isEmpty()){
             if(TokenList::INT_EXPRESSION.match(t).hasMatch())
             {
@@ -256,6 +260,7 @@ void Parser::parseInstructions(InstructionBlock *instrBlock, TokenList &tokens, 
 {
     for(qsizetype i=currentPos;i<tokens.size();++i)
     {
+        qDebug().noquote()<<tokens[i].getToken() <<" | "<< Token::tokenTypeToString(tokens.secureAccess(i).getType());
         switch (tokens[i].getType()) {
         case Token::ClosingBrace:
         {
@@ -271,7 +276,7 @@ void Parser::parseInstructions(InstructionBlock *instrBlock, TokenList &tokens, 
             {
 //                declare=true;
 
-                DeclareInstruction * instr=new DeclareInstruction(qApp,instrBlock,new Var( qApp,Type::typeForName(getTokenAndExpectTokenType(tokens,i-2,getTypeTokens() )),getTokenAndExpectTokenType(tokens,i-1,Token::Identifier)),other);
+                DeclareInstruction * instr=new DeclareInstruction(qApp,instrBlock,Var::create( qApp,Type::typeForName(getTokenAndExpectTokenType(tokens,i-2,getTypeTokens() )),getTokenAndExpectTokenType(tokens,i-1,Token::Identifier)),other);
                 instrBlock->addInstruction(instr);
             } else {
                 AssignInstruction * instr=new AssignInstruction(qApp,instrBlock,getTokenAndExpectTokenType(tokens,i-1,Token::Identifier),other);
@@ -306,7 +311,7 @@ void Parser::parseInstructions(InstructionBlock *instrBlock, TokenList &tokens, 
             Instruction * start=nullptr;
             if(tokens.secureAccessType(i+3) == Token::Assign && checkTokenType(tokens,i+1,getTypeTokens() ))
             {
-                auto var=new Var(qApp,Type::typeForName(tokens[i+1].getToken()),tokens[i+2].getToken());
+                auto var=Var::create(qApp,Type::typeForName(tokens[i+1].getToken()),tokens[i+2].getToken());
                 start = new DeclareInstruction(qApp,instrBlock,var,getExpression(tokens,i+4,instrBlock));
                 i+=5;
                 expectTokenType(tokens,i,Token::Semicolon);
@@ -334,10 +339,24 @@ void Parser::parseInstructions(InstructionBlock *instrBlock, TokenList &tokens, 
         {
             expectTokenType(tokens,++i,Token::OpeningParenthesis);
             Expression*  cond = getExpression(tokens,i+1,instrBlock);
-            i+=3;
+            auto whileloop=new WhileLoop(qApp,instrBlock, cond);
 
-
-            instrBlock->addInstruction(new WhileLoop(qApp,instrBlock, cond));
+            instrBlock->addInstruction(whileloop);
+            i+=2;
+            expectTokenType(tokens ,i++, Token::ClosingParenthesis);
+            expectTokenType(tokens ,i++, Token::OpeningBrace);
+            parseInstructions(whileloop,tokens,i);
+            break;
+        }
+        case Token::Increment:
+        {
+            instrBlock->addInstruction(new IncrementInstruction(qApp,instrBlock, getExpression(tokens,i-1,instrBlock)));
+            break;
+        }
+        case Token::DebugFunction:
+        {
+            expectTokenType(tokens ,++i, Token::ShiftOperator);
+            instrBlock->addInstruction(new DebugFunction(qApp,instrBlock, getExpression(tokens,++i,instrBlock)));
             break;
         }
         default:
@@ -353,6 +372,7 @@ Expression*   Parser::getPlainExpression(TokenList &tokens, qsizetype pos, Instr
 #ifdef QT_DEBUG
     TokenList original(tokens);
 #endif
+
     for(qsizetype i=pos;i<tokens.size()-1;++i)
     {
         if(tokens[i].getType()==Token::Semicolon || tokens[i].getType() == Token::ClosingParenthesis) {
@@ -490,6 +510,9 @@ Expression*   Parser::getPlainExpression(TokenList &tokens, qsizetype pos, Instr
     }
     for(qsizetype i=pos+1;i<tokens.size()-1;++i)
     {
+        if(tokens[i].getType()==Token::Semicolon || tokens[i].getType() == Token::ClosingParenthesis) {
+            break;
+        }
         switch (tokens[i].getType()) {
       case Token::GreaterThan:
         {
@@ -543,12 +566,16 @@ Expression*   Parser::getPlainExpression(TokenList &tokens, qsizetype pos, Instr
             break;
         }
     }
-    if(tokens.isEmpty() || tokens.size()<pos || tokens[pos].getExpr()==nullptr)
+
+    if(tokens.isEmpty())
     {
-#ifdef QT_DEBUG
-        //qDebug()<<original.size();
-#endif
-        throwExceptionWithLine("syntax error");
+        throwExceptionWithLine("syntax error. tokens empty");
+    } else if( tokens.size()<pos )
+    {
+        throwExceptionWithLine("syntax error. unexpected eof");
+    } else if(  tokens[pos].getExpr()==nullptr)
+    {
+        throwExceptionWithLine(QStringLiteral("syntax error. Expr at pos %1 is null").arg(pos));
     }
     return tokens[pos].getExpr();
 }
@@ -606,8 +633,8 @@ AST * Parser::parse(const QString &s)
                 {
                      if(getChar(s,i+1)=='/') {
 #ifdef QT_DEBUG
-                        qDebug().noquote()<<"comment at pos "<<i;
-                        auto k=i+2;
+                        //qDebug().noquote()<<"comment at pos "<<i;
+                        //auto k=i+2;
 #endif
                         while(i<s.length())
                         {
@@ -615,7 +642,7 @@ AST * Parser::parse(const QString &s)
                             if(s[i]=='\n') {
                                 start =i;
 #ifdef QT_DEBUG
-                                qDebug().noquote()<<"ignored comment "<<s.mid(k,i-k-1);
+                              //  qDebug().noquote()<<"ignored comment "<<s.mid(k,i-k-1);
 #endif
                                 break;
                             }
@@ -756,11 +783,11 @@ AST * Parser::parse(const QString &s)
     auto i=s.length();
  addToken(s,tokens,start,i);
 #ifdef QT_DEBUG
-    for(const Token &t:tokens)
-    {
-        qDebug().noquote()<<t.getToken()<<":  "<<t.getType();
-        qDebug()<<"---------------";
-    }
+   // for(const Token &t:tokens)
+   // {
+        //qDebug().noquote()<<t.getToken()<<":  "<<t.getType();
+       // qDebug()<<"---------------";
+    //}
 #endif
 
     auto ast = new AST(qApp);

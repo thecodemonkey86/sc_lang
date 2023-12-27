@@ -1,6 +1,6 @@
 #include "type.h"
 #include "exception/qtexception.h"
-#include "model/int32type.h"
+#include "int32type.h"
 #include <QCoreApplication>
 bool Type::getPrimitive() const
 {
@@ -37,6 +37,11 @@ Type *Type::getPlusOperatorType(Type *other)
     throwExceptionWithLine("plus operator is unsupported");
 }
 
+bool Type::isInt32Type() const
+{
+    return this== Type::int32Type;
+}
+
 Type *Type::getTypePlaceholder(const QString &name)
 {
     if(!typePlaceholders.contains(name))
@@ -59,6 +64,6 @@ Type::Type(QObject * parent, const QString &name) : QObject(parent), name(name),
 
 }
 
-Int32Type* Type::int32Type = new Int32Type(qApp);
+Type* Type::int32Type = new Int32Type(qApp);
 QHash<QString,Type*> Type::declaredTypes;
 QHash<QString,Type*> Type::typePlaceholders;

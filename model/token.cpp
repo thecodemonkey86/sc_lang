@@ -35,6 +35,26 @@ token = newToken;
 QString Token::tokenTypeToString(TokenType type)
 {
 switch (type) {
+case Token::Int64Type:
+    return "i64";
+case Token::Int8Type:
+    return "i8";
+case Token::Int16Type:
+    return "i16";
+case Token::UInt32Type:
+    return "ui32";
+case Token::UInt64Type:
+    return "ui64";
+case Token::UInt8Type:
+    return "ui8";
+case Token::UInt16Type:
+    return "ui16";
+case Token::Increment:
+    return "++";
+case Token::UnaryMinus:
+    return "-";
+case Token::WhileLoop:
+    return "while";
 case Token::StringLiteral:
     return "StringLiteral";
 case Token::Identifier:

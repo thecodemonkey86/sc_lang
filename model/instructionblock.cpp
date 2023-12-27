@@ -40,4 +40,5 @@ void InstructionBlock::execute()
     {
         i->execute();
     }
+    declaredVars.clear();
 }

@@ -1,22 +1,30 @@
 #include "var.h"
 #include "qobject.h"
+#include "type.h"
+#include "i32var.h"
+#include "exception/qtexception.h"
 
 QString Var::getName() const
 {
     return name;
 }
 
-Expression *Var::getValue() const
+Var *Var::create(QObject *parent, Type *type, const QString &name)
 {
-    return value;
+    if(type == Type::int32Type) {
+        return new I32Var(parent,name,0);
+    }
+
+    throwExceptionWithLine("unsupported operation");
 }
 
-void Var::setValue(Expression *newValue)
+
+Var::Var(QObject * parent,Type * type, const QString & name) : Expression(parent),type(type) , name(name)
 {
-    value = newValue;
+
 }
 
-Var::Var(QObject * parent,Type * type, const QString & name) : QObject(parent),type(type) , name(name)
+Expression *Var::increment()
 {
-
+    throwExceptionWithLine("unsupported operation");
 }

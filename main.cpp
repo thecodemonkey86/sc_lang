@@ -1,5 +1,6 @@
 
 #include <QCoreApplication>
+#include <QTimer>
 
 #include <parser/parser.h>
 #include "util/file/fileutil.h"
@@ -47,6 +48,7 @@ int main(int argc, char *argv[])
         Parser p;
         AST *ast = p.parse(FileUtil::readAllUtf8(args[1]));
         ast->run();
+        QTimer::singleShot(0, qApp, &QCoreApplication::quit);
     } catch (const QtException &e) {
          qDebug()<<e.getLogString();
     }

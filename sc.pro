@@ -47,6 +47,7 @@ HEADERS += \
     model/andoperator.h \
     model/assigninstruction.h \
     model/ast.h \
+    model/debugfunction.h \
     model/declareinstruction.h \
     model/divideoperator.h \
     model/expression.h \
@@ -54,6 +55,7 @@ HEADERS += \
     model/forloop.h \
     model/function.h \
     model/greaterthanoperator.h \
+    model/i32var.h \
     model/incrementinstruction.h \
     model/instruction.h \
     model/instructionblock.h \
@@ -81,6 +83,7 @@ SOURCES += \
     model/andoperator.cpp \
     model/assigninstruction.cpp \
     model/ast.cpp \
+    model/debugfunction.cpp \
     model/declareinstruction.cpp \
     model/divideoperator.cpp \
     model/expression.cpp \
@@ -88,6 +91,7 @@ SOURCES += \
     model/forloop.cpp \
     model/function.cpp \
     model/greaterthanoperator.cpp \
+    model/i32var.cpp \
     model/incrementinstruction.cpp \
     model/instruction.cpp \
     model/instructionblock.cpp \

@@ -12,7 +12,7 @@ public:
 
     virtual Expression * evaluate();
     virtual Type * getType() const;
-    virtual void print();
+    virtual void debug();
     virtual void assign(Expression * other);
     virtual QString toString() const;
     virtual Expression* plus (Expression * other);
@@ -22,5 +22,6 @@ public:
     virtual Expression* multiply (Expression * other);
     virtual int toInt();
     virtual bool toBool();
+
 };
 
