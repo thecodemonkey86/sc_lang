@@ -355,8 +355,9 @@ void Parser::parseInstructions(InstructionBlock *instrBlock, TokenList &tokens, 
         }
         case Token::DebugFunction:
         {
-            expectTokenType(tokens ,++i, Token::ShiftOperator);
+            expectTokenType(tokens ,++i, Token::OpeningParenthesis);
             instrBlock->addInstruction(new DebugFunction(qApp,instrBlock, getExpression(tokens,++i,instrBlock)));
+            expectTokenType(tokens ,++i, Token::ClosingParenthesis);
             break;
         }
         default:
@@ -770,7 +771,8 @@ AST * Parser::parse(const QString &s)
                      if(!escape) {
                          quot =false;
                          QString str=s.mid(start+1, i-start-1);
-                         tokens.append(Token(str, Token::StringLiteral));
+                         tokens.append(Token(str, Token::StringLiteral, new StringConstant(qApp,str)));
+                         start=i+1;
                      }
                     break;
                 }

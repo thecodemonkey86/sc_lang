@@ -11,6 +11,10 @@ public:
 
     // Expression interface
 public:
-    StringConstant *evaluate();
+    StringConstant *evaluate() override;
+
+    // Expression interface
+public:
+    virtual void debug() override;
 };
 

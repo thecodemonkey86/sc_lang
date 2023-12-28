@@ -11,3 +11,9 @@ StringConstant *StringConstant::evaluate()
     return this;
 }
 
+
+
+void StringConstant::debug()
+{
+    qDebug().noquote()<<str;
+}
